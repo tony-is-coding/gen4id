@@ -1,21 +1,13 @@
-class Generator:
-
-    def encode(self, ):
-        raise NotImplementedError
-
-    def decode(self):
-        raise NotImplementedError
-
-
-class Digit:
-
-    def add(self):
-        raise NotImplementedError
-
-    def check(self):
-        raise NotImplementedError
-
+import random
 
 from .increase_gen import IncreaseGen
 
-__all__ = ['IncreaseGen']
+
+def random_str(seq: str) -> str:
+    """shuffle a string"""
+    seq = list(seq)
+    random.shuffle(seq)
+    return "".join(seq)
+
+
+__all__ = ['IncreaseGen', 'random_str']

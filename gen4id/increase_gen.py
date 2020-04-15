@@ -26,12 +26,13 @@
 #
 # ##############################
 
-PURE_DIGITAL = "7083416592"
-MIXED = "7083416592"
+DIGITAL = "1234567890"
+ALPHABETIC = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+MIXED = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 class IncreaseGen:
-    def __init__(self, choose: str, key_len: int, digit: bool = False, digit_bit: int = 2):
+    def __init__(self, key_len: int, choose: str = MIXED, digit: bool = False, digit_bit: int = 2):
         self._choose = choose
         self._key_len = key_len
         self._digit = digit
@@ -41,12 +42,12 @@ class IncreaseGen:
 
         self._code: str = ""
 
-    def encode(self, increase_id: str) -> str:
+    def encode(self, increase_id: int) -> str:
         str_len = len(self._choose)
         ken_len = self._key_len - self._digit_bit
         for _ in range(ken_len):
             tmp_index = increase_id % str_len
-            increase_id = int(increase_id / str_len)
+            increase_id = increase_id // str_len
             self._code = "{}{}".format(self._choose[tmp_index], self._code)
         if not self._digit:
             self.digit()
@@ -58,16 +59,16 @@ class IncreaseGen:
     @classmethod
     def __digit(cls, s_code: str) -> str:
         """
-        加入校验位
+        add the digit check bit
         :return:
         """
         i = 1
         tmp_sum = 0
         for num in s_code:  # number 为0-9
             if 0 == i % 2:
-                tmp = int(num) * 2 % 10  # tmp 这种
+                tmp = int(ord(num)) * 2 % 10  # tmp 这种
             else:
-                tmp = int(num) * 3 % 10
+                tmp = int(ord(num)) * 3 % 10
             tmp_sum += tmp
             i += 2
         if 0 == tmp_sum % 10:
@@ -89,3 +90,4 @@ class IncreaseGen:
         for i in range(self._digit_bit):
             self._code += self.__digit(self._code)
         return self._code
+
