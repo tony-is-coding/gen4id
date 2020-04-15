@@ -1,6 +1,3 @@
-from abc import ABCMeta
-
-
 class Generator:
 
     def encode(self, ):
@@ -17,3 +14,8 @@ class Digit:
 
     def check(self):
         raise NotImplementedError
+
+
+from .increase_gen import IncreaseGen
+
+__all__ = ['IncreaseGen']

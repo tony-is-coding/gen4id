@@ -89,8 +89,3 @@ class IncreaseGen:
         for i in range(self._digit_bit):
             self._code += self.__digit(self._code)
         return self._code
-
-
-if __name__ == '__main__':
-    i = IncreaseGen(choose=MIXED, key_len=8)
-    print(i.encode(5))
