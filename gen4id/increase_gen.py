@@ -34,24 +34,25 @@ MIXED = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 class IncreaseGen:
     def __init__(self, key_len: int, choose: str = MIXED, digit: bool = False, digit_bit: int = 2):
         self._choose = choose
-        self._key_len = key_len
+
         self._digit = digit
         self._digit_bit = digit_bit
+        self._key_len = key_len - self._digit_bit if self._digit else key_len
+
         if key_len <= digit_bit * 2:
             raise ValueError("ken len must double bigger then digit bit")
 
-        self._code: str = ""
-
     def encode(self, increase_id: int) -> str:
+        new_code = ""
         str_len = len(self._choose)
         ken_len = self._key_len - self._digit_bit
         for _ in range(ken_len):
             tmp_index = increase_id % str_len
             increase_id = increase_id // str_len
-            self._code = "{}{}".format(self._choose[tmp_index], self._code)
+            new_code = "{}{}".format(self._choose[tmp_index], new_code)
         if not self._digit:
-            self.digit()
-        return self._code
+            new_code = self.digit(new_code)
+        return new_code
 
     def decode(self):
         pass
@@ -86,8 +87,7 @@ class IncreaseGen:
         """
         return s[:index] + ins + s[index:]
 
-    def digit(self) -> str:
+    def digit(self, code: str) -> str:
         for i in range(self._digit_bit):
-            self._code += self.__digit(self._code)
-        return self._code
-
+            code += self.__digit(code)
+        return code
